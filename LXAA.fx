@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------------------*/
-namespace 					 	  LXAA										 {
-/*		     Fast antialiasing shader by G.Rebord, for Reshade	
-			 Based on FXAA3 CONSOLE version by TIMOTHY LOTTES
+namespace 			LXAA										 {
+/*		Fast antialiasing shader by G.Rebord, for Reshade	
+		Based on FXAA3 CONSOLE version by TIMOTHY LOTTES
 ------------------------------------------------------------------------------
 THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -32,8 +32,8 @@ sampler BackBuffer {
 };
 static const float2 RCP2 = float2(BUFFER_RCP_WIDTH * 2,BUFFER_RCP_HEIGHT * 2);
 /*--------------------------------------------------------------------------*/
-#define tsp(p) 				float4(p, 0.0, 0.0)
-#define GetLuma(c)			dot(c, float3(0.299, 0.587, 0.114))
+#define tsp(p) 			float4(p, 0.0, 0.0)
+#define GetLuma(c)		dot(c, float3(0.299, 0.587, 0.114))
 #define SampleColor(p) 		tex2Dlod(BackBuffer, tsp(p)).rgb
 #define SampleLumaOff(p, o) GetLuma(tex2Dlodoffset(BackBuffer, tsp(p), o).rgb)
 /*--------------------------------------------------------------------------*/
@@ -64,11 +64,11 @@ float3 LXAAPS
 	lumaA.z = SampleLumaOff(tco, OffNE);
 	lumaA.w = SampleLumaOff(tco, OffNW);
 /*--------------------------------------------------------------------------*/
-    float gradientSWNE = lumaA.x - lumaA.z;
+	float gradientSWNE = lumaA.x - lumaA.z;
 	float gradientSENW = lumaA.y - lumaA.w;
 	float2 dir;
-    dir.x = gradientSWNE + gradientSENW;
-    dir.y = gradientSWNE - gradientSENW;
+	dir.x = gradientSWNE + gradientSENW;
+	dir.y = gradientSWNE - gradientSENW;
 /*--------------------------------------------------------------------------*/
 	float2 dirM = abs(dir);
 	float lumaAMax = max(max(lumaA.x, lumaA.y), max(lumaA.z, lumaA.w));
@@ -112,14 +112,14 @@ float3 LXAAPS
 	float2 offset = offM * offMult;
 /*--------------------------------------------------------------------------*/
 	float3 rgbM = SampleColor(tco);
-    float3 rgbN = SampleColor(tco - offset);
-    float3 rgbP = SampleColor(tco + offset);
-    float3 rgbR = (rgbN + rgbP) * LXAA_PROP_EACH_NP + rgbM * LXAA_PROP_MAIN;
+	float3 rgbN = SampleColor(tco - offset);
+	float3 rgbP = SampleColor(tco + offset);
+	float3 rgbR = (rgbN + rgbP) * LXAA_PROP_EACH_NP + rgbM * LXAA_PROP_MAIN;
 /*--------------------------------------------------------------------------*/
 	float lumaR = GetLuma(rgbR);
 	float lumaAMin = min(min(lumaA.x, lumaA.y), min(lumaA.z, lumaA.w));
-    bool outOfRange = (lumaR < lumaAMin) || (lumaR > lumaAMax);
-    if(outOfRange) discard;
+	bool outOfRange = (lumaR < lumaAMin) || (lumaR > lumaAMax);
+	if(outOfRange) discard;
 /*--------------------------------------------------------------------------*/
 	return rgbR;
 }
