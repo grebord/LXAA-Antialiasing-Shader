@@ -55,7 +55,7 @@ void LXAAVS(in uint id : SV_VertexID,
 }	
 /*==========================================================================*/
 float3 LXAAPS
-(float4 pos : SV_Position, noperspective float2 tco : TEXCOORD) : SV_Target
+(float4 pos : SV_Position, float2 tco : TEXCOORD) : SV_Target
 {
 /*--------------------------------------------------------------------------*/
 	float4 lumaA;
